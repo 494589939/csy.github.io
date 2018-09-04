@@ -55,7 +55,7 @@
 					<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for Windows 10, version 1803下载</a><br><br>
 					二.下载好工具后制作自动应答文件“Autounattend.xml”下面有制作的参考教程，Google唯一一篇十分宝贵的1803版制作教程<br>
 					<a href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
-					三.接下来在搭建cobbler服务器<a href="https://juejin.im/entry/5ac9acd6f265da238e0e01ef">这是参考教程，我用的是服务器版本是centOS7</a>
+					三.接下来在搭建cobbler服务器，我用的服务器环境是centOS7，因为公司有DHCP服务了所以一些命令请自行修改<a href="http://www.madmalls.com/blog/post/cobbler-auto-install-multi-version-os/">这是参考教程链接</a>
 					四.制作winPE镜像，命令如下请按照提示修改成自己的命令：
 					<ol>
 						<li>用部署和映像工具环境复制WINPE到C盘根目录: copype amd64 C:\winpe_amd64\</li>
@@ -75,7 +75,7 @@
 							--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch /var/lib/cobbler/kickstarts/win10pe.xml cobbler
 							profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
 					</ol>
-					突然不想写了以后再补后续的！！
+					懒癌复发，突然不想写了以后再补后续的！！
 				</p>
 			</article>
 
