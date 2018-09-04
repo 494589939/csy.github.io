@@ -49,15 +49,22 @@
 			<article id="Cobbler">
 				<h2 class="major">Cobbler</h2>
 				<span class="image main"><img src="images/pic01.png" alt="" /></span>
-				<p>懒癌发作，先空着以后补，windowsATK,WIN10_1803_64X专业版，winPE,cobbler
+				<p>懒癌发作，先空着以后补，windowsADK,WIN10_1803_64X专业版，centOS7，winPE,cobbler<br>
+					<a href="https://www.cnblogs.com/pluse/p/8508538.html">这是国内大神写的WIN7版的参考文档</a><br><br>	
+					一.先下载WIN10专用的ADK工具（win7的和win10的不兼容），安装路径一般为默认我是装在F盘，注意路径一定要搞清楚否则后面打包会报错。<br>
+					<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for Windows 10, version 1803下载</a><br><br>
+					二.下载好工具后制作自动应答文件“Autounattend.xml”下面有制作的参考教程，Google唯一一篇十分宝贵的1803版制作教程<br>
+					<a href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
+					三.接下来在搭建cobbler服务器<a href="https://juejin.im/entry/5ac9acd6f265da238e0e01ef">这是参考教程，我用的是服务器版本是centOS7</a>
+					四.制作winPE镜像，命令如下请按照提示修改成自己的命令：
 					<ol>
 						<li>用部署和映像工具环境复制WINPE到C盘根目录: copype amd64 C:\winpe_amd64\</li>
 						<li>挂载WINPE： Dism /mount-image /imagefile:c:\winpe_amd64\media\sources\boot.wim /index:1 /mountdir:C:\winpe_amd64\mount
 						</li>
-						<li>重点！！！添加zh-CN语言包注意AKT的路径我的在F盘 非常重要 没有语言包 会报错 ： Dism /image:c:\winpe_amd64\mount /add-package /packagepath:"F:\Program
+						<li>重点！！！添加zh-CN语言包注意ADK的路径我的在F盘 非常重要 没有语言包 会报错 ： Dism /image:c:\winpe_amd64\mount /add-package /packagepath:"F:\Program
 							Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-FontSupport-ZH-CN.cab"
 						</li>
-						<li>重点！！！这里设置cobbler的服务器地址，注意smb 是否设置了密码验证，如果是请和我一样把密码账号添加在后面: echo net use z: \\192.168.58.128\share 'toor' /user:'root'
+						<li>重点！！！这里设置cobbler的服务器地址请修改成自己cobbler的服务器地址，注意smb 是否设置了密码验证，如果是请和我一样把密码账号添加在后面: echo net use z: \\192.168.58.128\share 'toor' /user:'root'
 							>> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo Z: >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd
 							echo cd win >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo setup.exe /unattend:Autounattend.xml >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd</li>
 						<li>卸载保存以上更改: dism /unmount-wim /mountdir:c:\winpe_amd64\mount /commit
@@ -68,6 +75,7 @@
 							--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch /var/lib/cobbler/kickstarts/win10pe.xml cobbler
 							profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
 					</ol>
+					突然不想写了以后再补后续的！！
 				</p>
 			</article>
 
