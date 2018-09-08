@@ -85,7 +85,6 @@
 						profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
 				</ol>
 				懒癌复发，突然不想写了以后再补后续的！！
-
 			</article>
 
 			<!-- Zabbix -->
@@ -114,7 +113,6 @@
 						</ol>
 					</li>
 				</ol>
-
 				<p>二.重装zabbix </p>
 					<ol>
 						<li>先卸载zabbix 相关服务与程序:
@@ -125,7 +123,7 @@
 							</ol>
 						</li>
 						<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
-						<li>之后按照官网链接重装，<a href="http://blog.51cto.com/zhujiangtao/1316168">点击前往相关链接。</a>
+						<li>之后按照官网教程重装，链接在上面已经有了.</li>
 						<li>初始化数据库: mysql_secure_installation </li>
 						<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> 
 					</ol> 
@@ -136,7 +134,6 @@
 						<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
 						<li>systemctl restart zabbix-server</li>
 					</ol>
-
 			</article>
 
 			<!-- HomeMap -->
@@ -201,10 +198,10 @@
 							</article> -->
 
 			<!-- Elements -->
-			<article id="elements">
-				<h2 class="major">Elements</h2>
+			<!-- <article id="elements">
+				<h2 class="major">Elements</h2> -->
 
-				<section>
+				<!-- <section>
 					<h3 class="major">Text</h3>
 					<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
 						This
@@ -233,9 +230,9 @@
 						}
 						print 'It took ' + i + ' iterations to sort the deck.';
 					</code></pre>
-				</section>
+				</section> -->
 
-				<section>
+				<!-- <section>
 					<h3 class="major">Lists</h3>
 
 					<h4>Unordered</h4>
@@ -278,8 +275,8 @@
 						<li><a href="#" class="button primary">Default</a></li>
 						<li><a href="#" class="button">Default</a></li>
 					</ul>
-				</section>
-
+				</section> -->
+<!-- 
 				<section>
 					<h3 class="major">Table</h3>
 					<h4>Default</h4>
@@ -326,8 +323,8 @@
 								</tr>
 							</tfoot>
 						</table>
-					</div>
-
+					</div> -->
+<!-- 
 					<h4>Alternate</h4>
 					<div class="table-wrapper">
 						<table class="alt">
@@ -373,9 +370,9 @@
 							</tfoot>
 						</table>
 					</div>
-				</section>
+				</section> -->
 
-				<section>
+				<!-- <section>
 					<h3 class="major">Buttons</h3>
 					<ul class="actions">
 						<li><a href="#" class="button primary">Primary</a></li>
@@ -393,9 +390,9 @@
 						<li><span class="button primary disabled">Disabled</span></li>
 						<li><span class="button disabled">Disabled</span></li>
 					</ul>
-				</section>
+				</section> -->
 
-				<section>
+				<!-- <section>
 					<h3 class="major">Form</h3>
 					<form method="post" action="#">
 						<div class="fields">
@@ -443,9 +440,9 @@
 							<li><input type="reset" value="Reset" /></li>
 						</ul>
 					</form>
-				</section>
+				</section> -->
 
-			</article>
+			<!-- </article> -->
 
 		</div>
 
