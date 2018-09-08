@@ -116,24 +116,26 @@
 				</ol>
 
 				<p>二.重装zabbix </p>
-				<ol>
-					<li>先卸载zabbix 相关服务与程序:
-						<ol>
-							<li>systemctl stop zabbix-server zabbix-agent httpd</li>
-							<li>systemctl disable zabbix-server zabbix-agent httpd</li>
-							<li>yum -y remove zabbix-server-mysql zabbix-web-mysql zabbix-agent</li>
-						</ol>
-					</li>
-					<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
-					<li>之后按照官网链接重装，<a href="http://blog.51cto.com/zhujiangtao/1316168">点击前往相关链接。</a>
-					<li>初始化数据库: mysql_secure_installation </li>
-					<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> </ol> <p>三.zabbix中文乱码解决</p>
+					<ol>
+						<li>先卸载zabbix 相关服务与程序:
 							<ol>
-								<li>去拷贝个微软黑体（SIMHEI.TTF）到/usr/share/zabbix/fonts/</li>
-								<li>换字体先移除原链接：rm -f /etc/alternatives/zabbix-web-font</li>
-								<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
-								<li>systemctl restart zabbix-server</li>
+								<li>systemctl stop zabbix-server zabbix-agent httpd</li>
+								<li>systemctl disable zabbix-server zabbix-agent httpd</li>
+								<li>yum -y remove zabbix-server-mysql zabbix-web-mysql zabbix-agent</li>
 							</ol>
+						</li>
+						<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
+						<li>之后按照官网链接重装，<a href="http://blog.51cto.com/zhujiangtao/1316168">点击前往相关链接。</a>
+						<li>初始化数据库: mysql_secure_installation </li>
+						<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> 
+					</ol> 
+				<p>三.zabbix中文乱码解决</p>
+					<ol>
+						<li>去拷贝个微软黑体（SIMHEI.TTF）到/usr/share/zabbix/fonts/</li>
+						<li>换字体先移除原链接：rm -f /etc/alternatives/zabbix-web-font</li>
+						<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
+						<li>systemctl restart zabbix-server</li>
+					</ol>
 
 			</article>
 
