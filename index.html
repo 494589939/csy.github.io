@@ -49,41 +49,92 @@
 			<article id="Cobbler">
 				<h2 class="major">Cobbler</h2>
 				<span class="image main"><img src="images/pic01.png" alt="" /></span>
-				<p>懒癌发作，先空着以后补，windowsADK,WIN10_1803_64X专业版，centOS7，winPE,cobbler<br>
-					<a href="https://www.cnblogs.com/pluse/p/8508538.html">这是国内大神写的WIN7版的参考文档</a><br><br>	
-					一.先下载WIN10专用的ADK工具（win7的和win10的不兼容），安装路径一般为默认我是装在F盘，注意路径一定要搞清楚否则后面打包会报错。<br>
-					<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for Windows 10, version 1803下载</a><br><br>
-					二.下载好工具后制作自动应答文件“Autounattend.xml”下面有制作的参考教程，Google唯一一篇十分宝贵的1803版制作教程<br>
-					<a href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
-					三.接下来在搭建cobbler服务器，我用的服务器环境是centOS7，因为公司有DHCP服务了所以一些命令请自行修改<a href="http://www.madmalls.com/blog/post/cobbler-auto-install-multi-version-os/">这是参考教程链接</a>
-					四.制作winPE镜像，命令如下请按照提示修改成自己的命令：
-					<ol>
-						<li>用部署和映像工具环境复制WINPE到C盘根目录: copype amd64 C:\winpe_amd64\</li>
-						<li>挂载WINPE： Dism /mount-image /imagefile:c:\winpe_amd64\media\sources\boot.wim /index:1 /mountdir:C:\winpe_amd64\mount
-						</li>
-						<li>重点！！！添加zh-CN语言包注意ADK的路径我的在F盘 非常重要 没有语言包 会报错 ： Dism /image:c:\winpe_amd64\mount /add-package /packagepath:"F:\Program
-							Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-FontSupport-ZH-CN.cab"
-						</li>
-						<li>重点！！！这里设置cobbler的服务器地址请修改成自己cobbler的服务器地址，注意smb 是否设置了密码验证，如果是请和我一样把密码账号添加在后面: echo net use z: \\192.168.58.128\share 'toor' /user:'root'
-							>> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo Z: >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd
-							echo cd win >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo setup.exe /unattend:Autounattend.xml >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd</li>
-						<li>卸载保存以上更改: dism /unmount-wim /mountdir:c:\winpe_amd64\mount /commit
-						</li>
-						<li>制作RE ISO 文件: MakeWinPEMedia /ISO C:\winpe_amd64 C:\winpe_amd64\winpe_cobbler_amd64.iso
-						</li>
-						<li>导入WINPE镜像: cobbler distro add --name=windows10 --kernel=/var/lib/tftpboot/memdisk --initrd=/root/winpe_cobbler_amd64.iso
-							--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch /var/lib/cobbler/kickstarts/win10pe.xml cobbler
-							profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
-					</ol>
-					懒癌复发，突然不想写了以后再补后续的！！
-				</p>
+				<p>懒癌发作，先空着以后补，windowsADK,WIN10_1803_64X专业版，centOS7，winPE,cobbler<br></p>
+				<a href="https://www.cnblogs.com/pluse/p/8508538.html">这是国内大神写的WIN7版的参考文档</a><br><br>
+				一.先下载WIN10专用的ADK工具（win7的和win10的不兼容），安装路径一般为默认我是装在F盘，注意路径一定要搞清楚否则后面打包会报错。<br>
+				<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for Windows 10,
+					version 1803下载</a><br><br>
+				二.下载好工具后制作自动应答文件“Autounattend.xml”下面有制作的参考教程，Google唯一一篇十分宝贵的1803版制作教程<br>
+				<a href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
+				三.接下来在搭建cobbler服务器，我用的服务器环境是centOS7，因为公司有DHCP服务了所以一些命令请自行修改<a href="http://www.madmalls.com/blog/post/cobbler-auto-install-multi-version-os/">这是参考教程链接</a>
+				四.制作winPE镜像，命令如下请按照提示修改成自己的命令：
+				<ol>
+					<li>用部署和映像工具环境复制WINPE到C盘根目录: copype amd64 C:\winpe_amd64\</li>
+					<li>挂载WINPE： Dism /mount-image /imagefile:c:\winpe_amd64\media\sources\boot.wim /index:1
+						/mountdir:C:\winpe_amd64\mount
+					</li>
+					<li>重点！！！添加zh-CN语言包注意ADK的路径我的在F盘 非常重要 没有语言包 会报错 ： Dism /image:c:\winpe_amd64\mount /add-package
+						/packagepath:"F:\Program
+						Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation
+						Environment\amd64\WinPE_OCs\WinPE-FontSupport-ZH-CN.cab"
+					</li>
+					<li>重点！！！这里设置cobbler的服务器地址请修改成自己cobbler的服务器地址，注意smb 是否设置了密码验证，如果是请和我一样把密码账号添加在后面: echo net use z:
+						\\192.168.58.128\share 'toor' /user:'root'
+						>> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo Z: >>
+						C:\winpe_amd64\mount\Windows\System32\startnet.cmd
+						echo cd win >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo setup.exe /unattend:Autounattend.xml >>
+						C:\winpe_amd64\mount\Windows\System32\startnet.cmd</li>
+					<li>卸载保存以上更改: dism /unmount-wim /mountdir:c:\winpe_amd64\mount /commit
+					</li>
+					<li>制作RE ISO 文件: MakeWinPEMedia /ISO C:\winpe_amd64 C:\winpe_amd64\winpe_cobbler_amd64.iso
+					</li>
+					<li>导入WINPE镜像: cobbler distro add --name=windows10 --kernel=/var/lib/tftpboot/memdisk
+						--initrd=/root/winpe_cobbler_amd64.iso
+						--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch /var/lib/cobbler/kickstarts/win10pe.xml
+						cobbler
+						profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
+				</ol>
+				懒癌复发，突然不想写了以后再补后续的！！
+
 			</article>
 
 			<!-- Zabbix -->
 			<article id="Zabbix">
 				<h2 class="major">Zabbix</h2>
 				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-				<p>懒癌发作，先空着以后补</p>
+				<p>一.安装Zabbix</p>
+				<ol>
+					<li>以centOS7 为例 官网教程安装zabbix非常无脑简单，<a href="https://www.zabbix.com/download">点击前往zabbix官网。</a></li>
+					<li>初始化centOS7自带的MariaDB数据库命令： mysql_secure_installation </li>
+					<li>安装好编辑配置文件： vi /etc/zabbix/zabbix_server.conf
+						<ol>
+							<li>DBPassword=password（改成自己zabbix数据库的密码）</li>
+							<li>CacheSize=8M（centOS装zabbix有内存溢出BUG，共享内存越大越好）</li>
+							<li>DebugLevel=3</li>
+						</ol>
+					</li>
+					<li>编辑PHP配置文件： vi /etc/zabbix/web/zabbix.conf.php
+						<ol>
+							让下面的配置和zabbix_server.conf里面的保持一致<br>
+							$DB['DATABASE'] = 'zabbix';<br>
+							$DB['USER']     = 'zabbix';<br>
+							$DB['PASSWORD'] = 'zabbix';<br>
+							$ZBX_SERVER = 'localhost';<br>
+							$ZBX_SERVER_PORT = '10051';
+						</ol>
+					</li>
+				</ol>
+
+				<p>二.重装zabbix </p>
+				<ol>
+					<li>先卸载zabbix 相关服务与程序:
+						<ol>
+							<li>systemctl stop zabbix-server zabbix-agent httpd</li>
+							<li>systemctl disable zabbix-server zabbix-agent httpd</li>
+							<li>yum -y remove zabbix-server-mysql zabbix-web-mysql zabbix-agent</li>
+						</ol>
+					</li>
+					<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
+					<li>之后按照官网链接重装，<a href="http://blog.51cto.com/zhujiangtao/1316168">点击前往相关链接。</a>
+					<li>初始化数据库: mysql_secure_installation </li>
+					<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> </ol> <p>三.zabbix中文乱码解决</p>
+							<ol>
+								<li>去拷贝个微软黑体（SIMHEI.TTF）到/usr/share/zabbix/fonts/</li>
+								<li>换字体先移除原链接：rm -f /etc/alternatives/zabbix-web-font</li>
+								<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
+								<li>systemctl restart zabbix-server</li>
+							</ol>
+
 			</article>
 
 			<!-- HomeMap -->
@@ -94,22 +145,13 @@
 				</p>
 			</article>
 
-			<!-- Homemap -->
-			<article id="Homemap">
-				<h2 class="major">WindowsATK</h2>
-				<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
-				<p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet
-					ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris
-					nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit
-					amet ex mollis mattis lorem ipsum dolor sit amet.</p>
-			</article>
-
 			<!-- SSR -->
 			<article id="SSR">
 				<h2 class="major">SSR</h2>
 				<span class="image main"><img src="images/pic04.png" alt="" /></span>
 				<p>一.准备一台VPS（云服务器），我个人使用的是美国的搬瓦工的包年最低套餐19.99美元/年。搬瓦工目前有2条3倍速度的国际线路对电信宽带有暴力加成（IP比较缺要看运气），相对稳定性价比极高而且有自带BBR的傻瓜式版本。
-					<a href="https://bwh1.net/">点击前往搬瓦工官网</a><br><br> 二.注意购买KVM版的服务器不要买OVZ版的服务器。买好后按照提示登录管理后台新建一台debian_7_64位 不带BBR的系统（直接买BBR版也可以不过我没试过），之后就可以使用putty等SSH软件远程VPS进行管理和配置了。
+					<a href="https://bwh1.net/">点击前往搬瓦工官网</a><br><br> 二.注意购买KVM版的服务器不要买OVZ版的服务器。买好后按照提示登录管理后台新建一台debian_7_64位
+					不带BBR的系统（直接买BBR版也可以不过我没试过），之后就可以使用putty等SSH软件远程VPS进行管理和配置了。
 					<br><br> 三.接下来是配置按照SSR+BBR 这里用了大神们制作的debian一件安装脚本,直接复制命令到putty回车运行。
 					<br>
 					<ol>
@@ -118,6 +160,7 @@
 						<li>wget -N --no-check-certificate https://makeai.cn/bash/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh</li>
 						<li>下载成功后脚本会自动运行，之后如果不知道怎么操作就一路回车或则按照提示输入Y就行了，配置以后都是可以改的</li>
 						<li>安装好后去下载SSR客户端和APP以及使用教程------<a href="https://www.bbaaz.com/thread-20-1-1.html">点击此处去下载。</a></li>
+						<li>多用户 bash ssrba.sh 选用户配置进行添加就行</li>
 					</ol>
 					四.按照教程配置和安装好客户端后就可以愉快的去墙外的世界了，此教程纯粹个人记录与技术交流，请各位出去后不要作死，被查水表本人概不负责。
 				</p>
@@ -161,8 +204,10 @@
 
 				<section>
 					<h3 class="major">Text</h3>
-					<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>. This
-						is <sup>superscript</sup> text and this is <sub>subscript</sub> text. This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>.
+					<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
+						This
+						is <sup>superscript</sup> text and this is <sub>subscript</sub> text. This is <u>underlined</u> and this is code:
+						<code>for (;;) { ... }</code>.
 						Finally, <a href="#">this is a link</a>.</p>
 					<hr />
 					<h2>Heading Level 2</h2>
@@ -172,8 +217,10 @@
 					<h6>Heading Level 6</h6>
 					<hr />
 					<h4>Blockquote</h4>
-					<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum
-						ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus.
+					<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod.
+						Vestibulum
+						ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan
+						faucibus.
 						Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
 					<h4>Preformatted</h4>
 					<pre><code>i = 0;
