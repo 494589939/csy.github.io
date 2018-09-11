@@ -36,6 +36,8 @@
 					<li><a href="#Zabbix">Zabbix</a></li>
 					<li><a href="#HomeMap">HomeMap</a></li>
 					<li><a href="#SSR">SSR</a></li>
+					<!-- <li><a href="#SSR2">SSR2</a></li>
+					<li><a href="#SSR2">SSR3</a></li> -->
 					<!--<li><a href="#elements">Elements</a></li>-->
 				</ul>
 			</nav>
@@ -134,6 +136,16 @@
 						<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
 						<li>systemctl restart zabbix-server</li>
 					</ol>
+				<p>四.zabbix+python脚本+企业微信报警</p>
+				<ol>
+					<li>python3 的执行环境配置与wechat.py<a href="https://github.com/494589939/494589939.github.io/tree/master/python">去我Github下载自己修改</a></li>
+					<li>微信报警脚本程序在 /usr/lib/zabbix/alertscripts/wechat.py</li>
+					<li>注意添加用户执行权限 chmod 755 wechat.py</li>
+					<li>在zabbix 添加监控项和触发器</li>
+					<li>管理--报警媒介类型--创建媒体类型</li>
+					<li>右上角用户--报警媒介-添加报警媒介</li>
+					<li>systemctl restart zabbix-server</li>
+				</ol>
 			</article>
 
 			<!-- HomeMap -->
@@ -165,6 +177,19 @@
 				</p>
 			</article>
 
+			<!-- SSR2 -->
+			<!-- <article id="SSR2">
+				<h2 class="major">SSR2</h2>
+				<span class="image main"><img src="images/pic04.png" alt="" /></span>
+				<p> 后面填写</p>
+			</article> -->
+
+			<!-- SSR3 -->
+			<!-- <article id="SSR3">
+				<h2 class="major">SSR3</h2>
+				<span class="image main"><img src="images/pic04.png" alt="" /></span>
+				<p> 后面填写</p>
+			</article> -->
 
 			<!-- 留言模版 -->
 			<!-- <article id="SSR">
