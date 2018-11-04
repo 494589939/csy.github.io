@@ -83,6 +83,15 @@
 				<h2 class="major">HomeMap</h2>
 				<span class="image main"><img src="images/pic03.png" alt="" /></span>
 				<p>一.首先做这个地图是因为租房子的时候无法很直观的看到上班地点和房子的距离。 另外好久没维护了有些功能已经失效，具体教程以后补,先放做好的链接地址 <br><br><a href="http://www.csyweb.cf/">远or广找房地图（温州）</a>
+					<ol>
+						<li>确保运行库都已经安装完毕如lxml库，另外数据JS文件放在static文件夹内</li>
+						<li>http://www.csyweb.cf/Config  设置爬取区域和价格</li>
+						<li>后台运行加"&或nohup" (uWSGI myproject.ini &)</li>						
+						<li>在linux或Mac上设置环境变量的方式一样，编辑~/.bash_profile文件（’~’指的是用户登录后的默认目录），添加一行：</li>
+						<li>export LANG="en_US.UTF-8"</li>
+						<li>linux dibian 服务器设置 utf-8环境变量为utf-8编码</li>
+						<li>export LC_ALL=en_US.UTF-8</li>
+					</ol>
 				</p>
 			</article>
 
