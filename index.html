@@ -36,6 +36,7 @@
 					<li><a href="#Zabbix">Zabbix</a></li>
 					<li><a href="#HomeMap">HomeMap</a></li>
 					<li><a href="#SSR">SSR</a></li>
+					<li><a href="#Vsftpd">Vsftpd</a></li>
 					<!-- <li><a href="#SSR2">SSR2</a></li>
 					<li><a href="#SSR2">SSR3</a></li> -->
 					<!--<li><a href="#elements">Elements</a></li>-->
@@ -184,6 +185,70 @@
 					</ol>
 					四.按照教程配置和安装好客户端后就可以愉快的去墙外的世界了，此教程纯粹个人记录与技术交流，请各位出去后不要作死，被查水表本人概不负责。
 				</p>
+			</article>
+
+
+			<!-- Vsftpd -->
+			<article id="Vsftpd">
+				<h2 class="major">YUN局域网源</h2>
+				<span class="image main"><img src="images/pic01.png" alt="" /></span>
+				<p>CentOS7.3虚拟机+vsftp3.2+Snmp 开启端口转发NET不通<br><br>
+					先随便记着以后在补
+					临时关闭内核防火墙<br>
+					setenforce 0<br><br>
+					
+					永久关闭内核防火墙<br>
+					vim /etc/selinux/config<br>
+					SELINUX=disabled<br>
+					永久关闭<br><br>
+					
+					yum install -y vsftpd lftp telnet <br>
+					vi /etc/vsftpd/vsftpd.conf<br>
+					增加一个anon_root=/mnt/cdron/（文件夹自建，匿名登露）<br>
+					firewall-cmd --zone=public --add-service=ftp --permanent<br><br>
+					
+					在主体机设置端口映射 将虚拟机的 ftp 21 端口映射到 20001端口。<br>
+					发现telnet 198.168.1.30 20001 不通<br>
+					Linux开放端口后必须有监听进程，那就将20001端口的流量转发至21<br>
+					firewall-cmd --zone=public --add-forward-port=port=20001:proto=tcp:toport=21 --permanent<br>
+					firewall-cmd --reload<br><br>
+					
+					用ftp命令或则windows输入ftp://192.168.1.30:20001 发现不通 用ftp工具（filezilla）和lftp 可以通.<br>
+					结论windows不允许匿名登录需要配置账户密码。<br>
+				</p>
+				<P>
+					下面是修改CentOS7源和开启Snmp的脚本 AutoSnmpConfig.sh<br><br>
+
+					#----------------------------------------------------------------<br>
+					tar zcvf  /etc/yum.repos.d/repo-bk.tar.gz   /etc/yum.repos.d/CentOS-*<br>
+					rm -f /etc/yum.repos.d/CentOS*<br><br>
+					
+					#----------------------------------------------------------------<br>
+					cat <<EOF>> /etc/yum.repos.d/CentOS-Base.repo<br>
+					[CentOS7-media]<br>
+					name=CentOS7-everything-media<br>
+					baseurl=ftp://68.63.9.250:20001<br>
+					gpgcheck=0<br>
+					enabled=1<br>
+					gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7<br>
+					EOF<br>
+					#----------------------------------------------------------------<br>
+					yum clean all<br>
+					yum makecache<br>
+					#----------------------------------------------------------------<br>
+					yum install -y net-snmp net-snmp-utils net-tools.x86_64 <br><br>
+					
+					sed -i '/view    systemview    included   .1.3.6.1.2.1.1/i view    systemview    included   .1' /etc/snmp/snmpd.conf<br>
+					sed -i 's/access  notConfigGroup ""      any       noauth    exact  systemview none none/access  notConfigGroup ""      any       noauth    exact  all none none/' /etc/snmp/snmpd.conf<br>
+					sed -i 's/#view all    included  .1                               80/view all    included  .1                               80/' /etc/snmp/snmpd.conf<br><br>
+					
+					#----------------------------------------------------------------<br>
+					firewall-cmd --add-port=161/udp --permanent<br>
+					firewall-cmd --reload<br>
+					systemctl restart snmpd<br>
+					systemctl enable snmpd<br>
+					systemctl status snmpd</P>
+				
 			</article>
 
 			<!-- SSR2 -->
