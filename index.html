@@ -36,7 +36,8 @@
 					<li><a href="#Zabbix">Zabbix</a></li>
 					<li><a href="#HomeMap">HomeMap</a></li>
 					<li><a href="#SSR">SSR</a></li>
-					<li><a href="#Vsftpd">Vsftpd</a></li>
+					<li><a href="#YUM">YUM</a></li>
+					<li><a href="#EXCEL">EXCEL</a></li>
 					<!-- <li><a href="#SSR2">SSR2</a></li>
 					<li><a href="#SSR2">SSR3</a></li> -->
 					<!--<li><a href="#elements">Elements</a></li>-->
@@ -189,7 +190,7 @@
 
 
 			<!-- Vsftpd -->
-			<article id="Vsftpd">
+			<article id="YUM">
 				<h2 class="major">YUN局域网源</h2>
 				<span class="image main"><img src="images/pic01.png" alt="" /></span>
 				<p>CentOS7.3虚拟机+vsftp3.2+Snmp 开启端口转发NET不通<br><br>
@@ -248,7 +249,29 @@
 					systemctl restart snmpd<br>
 					systemctl enable snmpd<br>
 					systemctl status snmpd</P>
-				
+			</article>
+
+			<article id="EXCEL">
+				<h2 class="major">EXCEL</h2>
+				<span class="image main"><img src="images/pic01.png" alt="" /></span>
+				<p>Vlookup与LEFT<br><br>
+					=VLOOKUP(--LEFT(F2,8),辖区代码!A$1:B$23,2,FALSE)<br><br>
+					正则表达式通配符之点星问：<br>
+						"."--匹配除“\n”和"\r"之外的任何单个字符。要匹配包括“\n”和"\r"在内的任何字符，请使用像“[\s\S]”的模式。<br>
+						"*"--匹配前面的子表达式任意次。例如，zo*能匹配“z”，也能匹配“zo”以及“zoo”。*等价于{0,}。<br>
+						"?"--匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。<br>	
+				</p>
+				#---------------------------------------------------------------------------------------------------------<br>
+				<p>
+					LEFT从左边第一个字符开始截取，截取指定的长度。<br>
+					文本用"LEFT"，数字格式用 "--LEFT"<br>
+
+					A1=123456<br>
+					LEFT(A1,3)=123<br>
+
+					B1=987654<br>
+					LEFT(B1,3)=987<br>
+				</P>		
 			</article>
 
 			<!-- SSR2 -->
