@@ -255,7 +255,11 @@
 				<h2 class="major">EXCEL</h2>
 				<span class="image main"><img src="images/pic01.png" alt="" /></span>
 				<p>Vlookup与LEFT<br><br>
-					=VLOOKUP(--LEFT(F2,8),辖区代码!A$1:B$23,2,FALSE)<br><br>
+					1.vlookup函数的查询值必须要位于查询数据区域的左侧，整个查询只能从左往右进行查询<br>
+					2.查询范围通常都是固定的，因此需要绝对引用<br>
+					3.查询值必须在查询范围中存在，否则返回NA。（例如查询值为“农政 ”，但查询范围中只存在“农政”，那么vlookup函数返回的值依然是NA）<br><br>
+					
+					案例 =VLOOKUP(--LEFT(F2,8),辖区代码!A$1:B$23,2,FALSE)<br><br>
 					正则表达式通配符之点星问：<br>
 						"."--匹配除“\n”和"\r"之外的任何单个字符。要匹配包括“\n”和"\r"在内的任何字符，请使用像“[\s\S]”的模式。<br>
 						"*"--匹配前面的子表达式任意次。例如，zo*能匹配“z”，也能匹配“zo”以及“zoo”。*等价于{0,}。<br>
