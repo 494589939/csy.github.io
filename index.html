@@ -12,7 +12,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
 </head>
 
 <body class="is-preload">
@@ -37,6 +38,7 @@
 					<li><a href="#HomeMap">HomeMap</a></li>
 					<li><a href="#SSR">SSR</a></li>
 					<li><a href="#YUM">YUM</a></li>
+					<li><a href="#EXSI">EXSI</a></li>
 					<li><a href="#EXCEL">EXCEL</a></li>
 					<!-- <li><a href="#SSR2">SSR2</a></li>
 					<li><a href="#SSR2">SSR3</a></li> -->
@@ -52,15 +54,18 @@
 			<!-- Cobbler -->
 			<article id="Cobbler">
 				<h2 class="major">Cobbler</h2>
-				<span class="image main"><img src="images/pic01.png" alt="" /></span>
+				<span class="image main"><img src="images/cobbler.jpg" alt="" /></span>
 				<p>懒癌发作，先空着以后补，windowsADK,WIN10_1803_64X专业版，centOS7，winPE,cobbler<br></p>
 				<a href="https://www.cnblogs.com/pluse/p/8508538.html">这是国内大神写的WIN7版的参考文档</a><br><br>
 				一.先下载WIN10专用的ADK工具（win7的和win10的不兼容），安装路径一般为默认我是装在F盘，注意路径一定要搞清楚否则后面打包会报错。<br>
-				<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for Windows 10,
+				<a href="https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install">Windows ADK for
+					Windows 10,
 					version 1803下载</a><br><br>
 				二.下载好工具后制作自动应答文件“Autounattend.xml”下面有制作的参考教程，Google唯一一篇十分宝贵的1803版制作教程<br>
-				<a href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
-				三.接下来在搭建cobbler服务器，我用的服务器环境是centOS7，因为公司有DHCP服务了所以一些命令请自行修改<a href="http://www.madmalls.com/blog/post/cobbler-auto-install-multi-version-os/">这是参考教程链接</a>
+				<a
+					href="https://win10.guru/windows-10-unattended-install-media-part-2-answer-file-for-windows-setup/">德国大神的教学图文（要科学上网）</a><br>
+				三.接下来在搭建cobbler服务器，我用的服务器环境是centOS7，因为公司有DHCP服务了所以一些命令请自行修改<a
+					href="http://www.madmalls.com/blog/post/cobbler-auto-install-multi-version-os/">这是参考教程链接</a>
 				四.制作winPE镜像，命令如下请按照提示修改成自己的命令：
 				<ol>
 					<li>用部署和映像工具环境复制WINPE到C盘根目录: copype amd64 C:\winpe_amd64\</li>
@@ -76,7 +81,8 @@
 						\\192.168.58.128\share 'toor' /user:'root'
 						>> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo Z: >>
 						C:\winpe_amd64\mount\Windows\System32\startnet.cmd
-						echo cd win >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo setup.exe /unattend:Autounattend.xml >>
+						echo cd win >> C:\winpe_amd64\mount\Windows\System32\startnet.cmd echo setup.exe
+						/unattend:Autounattend.xml >>
 						C:\winpe_amd64\mount\Windows\System32\startnet.cmd</li>
 					<li>卸载保存以上更改: dism /unmount-wim /mountdir:c:\winpe_amd64\mount /commit
 					</li>
@@ -84,9 +90,11 @@
 					</li>
 					<li>导入WINPE镜像: cobbler distro add --name=windows10 --kernel=/var/lib/tftpboot/memdisk
 						--initrd=/root/winpe_cobbler_amd64.iso
-						--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch /var/lib/cobbler/kickstarts/win10pe.xml
+						--kopts="raw iso" rm -rf /var/lib/cobbler/kickstarts/win10pe.xml touch
+						/var/lib/cobbler/kickstarts/win10pe.xml
 						cobbler
-						profile add --name=windows10 --distro=windows10 --kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
+						profile add --name=windows10 --distro=windows10
+						--kickstart=/var/lib/cobbler/kickstarts/win10pe.xml cobbler sync</li>
 				</ol>
 				懒癌复发，突然不想写了以后再补后续的！！
 			</article>
@@ -110,7 +118,7 @@
 						<ol>
 							让下面的配置和zabbix_server.conf里面的保持一致<br>
 							$DB['DATABASE'] = 'zabbix';<br>
-							$DB['USER']     = 'zabbix';<br>
+							$DB['USER'] = 'zabbix';<br>
 							$DB['PASSWORD'] = 'zabbix';<br>
 							$ZBX_SERVER = 'localhost';<br>
 							$ZBX_SERVER_PORT = '10051';
@@ -118,47 +126,48 @@
 					</li>
 				</ol>
 				<p>二.重装zabbix </p>
-					<ol>
-						<li>先卸载zabbix 相关服务与程序:
-							<ol>
-								<li>systemctl stop zabbix-server zabbix-agent httpd</li>
-								<li>systemctl disable zabbix-server zabbix-agent httpd</li>
-								<li>yum -y remove zabbix-server-mysql zabbix-web-mysql zabbix-agent</li>
-							</ol>
-						</li>
-						<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
-						<li>之后按照官网教程重装，链接在上面已经有了.</li>
-						<li>初始化数据库: mysql_secure_installation </li>
-						<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> 
-					</ol> 
-				<p>三.zabbix中文乱码解决</p>
-					<ol>
-						<li>去拷贝个微软黑体（SIMHEI.TTF）到/usr/share/zabbix/fonts/</li>
-						<li>换字体先移除原链接：rm -f /etc/alternatives/zabbix-web-font</li>
-						<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
-						<li>systemctl restart zabbix-server</li>
-					</ol>
-				<p>四.zabbix+python脚本+企业微信报警</p>
 				<ol>
-					<li>python3 的执行环境配置文件与“wechat.py”可以去我<a href="https://github.com/494589939/494589939.github.io/tree/master/python">Github下载自己修改</a></li>
-					<li>微信报警脚本程序在 /usr/lib/zabbix/alertscripts/wechat.py</li>
-					<li>注意添加用户执行权限 chmod 755 wechat.py</li>
-					<li>在zabbix 添加监控项和触发器</li>
-					<li>管理--报警媒介类型--创建媒体类型</li>
-					<li>右上角用户--报警媒介-添加报警媒介</li>
-					<li>systemctl restart zabbix-server</li>
-				</ol>
+					<li>先卸载zabbix 相关服务与程序:
+						<ol>
+							<li>systemctl stop zabbix-server zabbix-agent httpd</li>
+							<li>systemctl disable zabbix-server zabbix-agent httpd</li>
+							<li>yum -y remove zabbix-server-mysql zabbix-web-mysql zabbix-agent</li>
+						</ol>
+					</li>
+					<li>备份zabbix数据库: mysqldump -uroot -p123456 --opt zabbix > zabbix.sql</li>
+					<li>之后按照官网教程重装，链接在上面已经有了.</li>
+					<li>初始化数据库: mysql_secure_installation </li>
+					<li>导入备份的数据库（迁移数据库用）: mysql -uroot -pzabbix zabbix < zabbix.sql</li> </ol> <p>三.zabbix中文乱码解决</p>
+							<ol>
+								<li>去拷贝个微软黑体（SIMHEI.TTF）到/usr/share/zabbix/fonts/</li>
+								<li>换字体先移除原链接：rm -f /etc/alternatives/zabbix-web-font</li>
+								<li>ln -s /usr/share/zabbix/fonts/SIMHEI.TTF /etc/alternatives/zabbix-web-font</li>
+								<li>systemctl restart zabbix-server</li>
+							</ol>
+							<p>四.zabbix+python脚本+企业微信报警</p>
+							<ol>
+								<li>python3 的执行环境配置文件与“wechat.py”可以去我<a
+										href="https://github.com/494589939/494589939.github.io/tree/master/python">Github下载自己修改</a>
+								</li>
+								<li>微信报警脚本程序在 /usr/lib/zabbix/alertscripts/wechat.py</li>
+								<li>注意添加用户执行权限 chmod 755 wechat.py</li>
+								<li>在zabbix 添加监控项和触发器</li>
+								<li>管理--报警媒介类型--创建媒体类型</li>
+								<li>右上角用户--报警媒介-添加报警媒介</li>
+								<li>systemctl restart zabbix-server</li>
+							</ol>
 			</article>
 
 			<!-- HomeMap -->
 			<article id="HomeMap">
 				<h2 class="major">HomeMap</h2>
 				<span class="image main"><img src="images/pic03.png" alt="" /></span>
-				<p>一.首先做这个地图是因为租房子的时候无法很直观的看到上班地点和房子的距离。 另外好久没维护了有些功能已经失效，具体教程以后补,先放做好的链接地址 <br><br><a href="http://www.csyweb.cf/">远or广找房地图（温州）</a>
+				<p>一.首先做这个地图是因为租房子的时候无法很直观的看到上班地点和房子的距离。 另外好久没维护了有些功能已经失效，具体教程以后补,先放做好的链接地址 <br><br><a
+						href="http://www.csyweb.cf/">远or广找房地图（温州）</a>
 					<ol>
 						<li>确保运行库都已经安装完毕如lxml库，另外数据JS文件放在static文件夹内</li>
-						<li>http://www.csyweb.cf/Config  设置爬取区域和价格</li>
-						<li>后台运行加"&或nohup" (uWSGI myproject.ini &)</li>						
+						<li>http://www.csyweb.cf/Config 设置爬取区域和价格</li>
+						<li>后台运行加"&或nohup" (uWSGI myproject.ini &)</li>
 						<li>在linux或Mac上设置环境变量的方式一样，编辑~/.bash_profile文件（’~’指的是用户登录后的默认目录），添加一行：</li>
 						<li>export LANG="en_US.UTF-8"</li>
 						<li>linux dibian 服务器设置 utf-8环境变量为utf-8编码</li>
@@ -172,16 +181,19 @@
 				<h2 class="major">SSR</h2>
 				<span class="image main"><img src="images/pic04.png" alt="" /></span>
 				<p>一.准备一台VPS（云服务器），我个人使用的是美国的搬瓦工的包年最低套餐19.99美元/年。搬瓦工目前有2条3倍速度的国际线路对电信宽带有暴力加成（IP比较缺要看运气），相对稳定性价比极高而且有自带BBR的傻瓜式版本。
-					<a href="https://bwh1.net/">点击前往搬瓦工官网</a><br><br> 二.注意购买KVM版的服务器不要买OVZ版的服务器。买好后按照提示登录管理后台新建一台debian_7_64位
+					<a href="https://bwh1.net/">点击前往搬瓦工官网</a><br><br>
+					二.注意购买KVM版的服务器不要买OVZ版的服务器。买好后按照提示登录管理后台新建一台debian_7_64位
 					不带BBR的系统（直接买BBR版也可以不过我没试过），之后就可以使用putty等SSH软件远程VPS进行管理和配置了。
 					<br><br> 三.接下来是配置按照SSR+BBR 这里用了大神们制作的debian一件安装脚本,直接复制命令到putty回车运行。
 					<br>
 					<ol>
 						<li>先确定自己是root用户不是的话先 sudo su 切换到root用户下</li>
 						<li>下载SSR配置脚本直接，如果wget的报错就 apt-get install -y wget 安装好后再次运行下载命令</li>
-						<li>wget -N --no-check-certificate https://makeai.cn/bash/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh</li>
+						<li>wget -N --no-check-certificate https://makeai.cn/bash/ssrmu.sh && chmod +x ssrmu.sh && bash
+							ssrmu.sh</li>
 						<li>下载成功后脚本会自动运行，之后如果不知道怎么操作就一路回车或则按照提示输入Y就行了，配置以后都是可以改的</li>
-						<li>安装好后去下载SSR客户端和APP以及使用教程------<a href="https://www.bbaaz.com/thread-20-1-1.html">点击此处去下载。</a></li>
+						<li>安装好后去下载SSR客户端和APP以及使用教程------<a href="https://www.bbaaz.com/thread-20-1-1.html">点击此处去下载。</a>
+						</li>
 						<li>多用户 bash ssrmu.sh 选7号设置用户配置进行添加就行</li>
 					</ol>
 					四.按照教程配置和安装好客户端后就可以愉快的去墙外的世界了，此教程纯粹个人记录与技术交流，请各位出去后不要作死，被查水表本人概不负责。
@@ -192,28 +204,28 @@
 			<!-- Vsftpd -->
 			<article id="YUM">
 				<h2 class="major">YUN局域网源</h2>
-				<span class="image main"><img src="images/pic01.png" alt="" /></span>
+				<span class="image main"><img src="images/centos.jpg" alt="" /></span>
 				<p>CentOS7.3虚拟机+vsftp3.2+Snmp 开启端口转发NET不通<br><br>
 					先随便记着以后在补
 					临时关闭内核防火墙<br>
 					setenforce 0<br><br>
-					
+
 					永久关闭内核防火墙<br>
 					vim /etc/selinux/config<br>
 					SELINUX=disabled<br>
 					永久关闭<br><br>
-					
+
 					yum install -y vsftpd lftp telnet <br>
 					vi /etc/vsftpd/vsftpd.conf<br>
 					增加一个anon_root=/mnt/cdron/（文件夹自建，匿名登露）<br>
 					firewall-cmd --zone=public --add-service=ftp --permanent<br><br>
-					
+
 					在主体机设置端口映射 将虚拟机的 ftp 21 端口映射到 20001端口。<br>
 					发现telnet 198.168.1.30 20001 不通<br>
 					Linux开放端口后必须有监听进程，那就将20001端口的流量转发至21<br>
 					firewall-cmd --zone=public --add-forward-port=port=20001:proto=tcp:toport=21 --permanent<br>
 					firewall-cmd --reload<br><br>
-					
+
 					用ftp命令或则windows输入ftp://192.168.1.30:20001 发现不通 用ftp工具（filezilla）和lftp 可以通.<br>
 					结论windows不允许匿名登录需要配置账户密码。<br>
 				</p>
@@ -221,49 +233,53 @@
 					下面是修改CentOS7源和开启Snmp的脚本 AutoSnmpConfig.sh<br><br>
 
 					#----------------------------------------------------------------<br>
-					tar zcvf  /etc/yum.repos.d/repo-bk.tar.gz   /etc/yum.repos.d/CentOS-*<br>
+					tar zcvf /etc/yum.repos.d/repo-bk.tar.gz /etc/yum.repos.d/CentOS-*<br>
 					rm -f /etc/yum.repos.d/CentOS*<br><br>
-					
+
 					#----------------------------------------------------------------<br>
 					cat <<EOF>> /etc/yum.repos.d/CentOS-Base.repo<br>
-					[CentOS7-media]<br>
-					name=CentOS7-everything-media<br>
-					baseurl=ftp://68.63.9.250:20001<br>
-					gpgcheck=0<br>
-					enabled=1<br>
-					gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7<br>
-					EOF<br>
-					#----------------------------------------------------------------<br>
-					yum clean all<br>
-					yum makecache<br>
-					#----------------------------------------------------------------<br>
-					yum install -y net-snmp net-snmp-utils net-tools.x86_64 <br><br>
-					
-					sed -i '/view    systemview    included   .1.3.6.1.2.1.1/i view    systemview    included   .1' /etc/snmp/snmpd.conf<br>
-					sed -i 's/access  notConfigGroup ""      any       noauth    exact  systemview none none/access  notConfigGroup ""      any       noauth    exact  all none none/' /etc/snmp/snmpd.conf<br>
-					sed -i 's/#view all    included  .1                               80/view all    included  .1                               80/' /etc/snmp/snmpd.conf<br><br>
-					
-					#----------------------------------------------------------------<br>
-					firewall-cmd --add-port=161/udp --permanent<br>
-					firewall-cmd --reload<br>
-					systemctl restart snmpd<br>
-					systemctl enable snmpd<br>
-					systemctl status snmpd</P>
+						[CentOS7-media]<br>
+						name=CentOS7-everything-media<br>
+						baseurl=ftp://68.63.9.250:20001<br>
+						gpgcheck=0<br>
+						enabled=1<br>
+						gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7<br>
+						EOF<br>
+						#----------------------------------------------------------------<br>
+						yum clean all<br>
+						yum makecache<br>
+						#----------------------------------------------------------------<br>
+						yum install -y net-snmp net-snmp-utils net-tools.x86_64 <br><br>
+
+						sed -i '/view systemview included .1.3.6.1.2.1.1/i view systemview included .1'
+						/etc/snmp/snmpd.conf<br>
+						sed -i 's/access notConfigGroup "" any noauth exact systemview none none/access notConfigGroup
+						"" any noauth exact all none none/' /etc/snmp/snmpd.conf<br>
+						sed -i 's/#view all included .1 80/view all included .1 80/' /etc/snmp/snmpd.conf<br><br>
+
+						#----------------------------------------------------------------<br>
+						firewall-cmd --add-port=161/udp --permanent<br>
+						firewall-cmd --reload<br>
+						systemctl restart snmpd<br>
+						systemctl enable snmpd<br>
+						systemctl status snmpd</P>
 			</article>
+
+
 
 			<article id="EXCEL">
 				<h2 class="major">EXCEL</h2>
-				<span class="image main"><img src="images/pic01.png" alt="" /></span>
+				<span class="image main"><img src="images/excel.jpg" alt="" /></span>
 				<p>Vlookup与LEFT<br><br>
 					1.vlookup函数的查询值必须要位于查询数据区域的左侧，整个查询只能从左往右进行查询<br>
 					2.查询范围通常都是固定的，因此需要绝对引用<br>
 					3.查询值必须在查询范围中存在，否则返回NA。（例如查询值为“农政 ”，但查询范围中只存在“农政”，那么vlookup函数返回的值依然是NA）<br><br>
-					
+
 					案例 =VLOOKUP(--LEFT(F2,8),辖区代码!A$1:B$23,2,FALSE)<br><br>
 					正则表达式通配符之点星问：<br>
-						"."--匹配除“\n”和"\r"之外的任何单个字符。要匹配包括“\n”和"\r"在内的任何字符，请使用像“[\s\S]”的模式。<br>
-						"*"--匹配前面的子表达式任意次。例如，zo*能匹配“z”，也能匹配“zo”以及“zoo”。*等价于{0,}。<br>
-						"?"--匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。<br>	
+					"."--匹配除“\n”和"\r"之外的任何单个字符。要匹配包括“\n”和"\r"在内的任何字符，请使用像“[\s\S]”的模式。<br>
+					"*"--匹配前面的子表达式任意次。例如，zo*能匹配“z”，也能匹配“zo”以及“zoo”。*等价于{0,}。<br>
+					"?"--匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。<br>
 				</p>
 				#---------------------------------------------------------------------------------------------------------<br>
 				<p>
@@ -275,9 +291,81 @@
 
 					B1=987654<br>
 					LEFT(B1,3)=987<br>
-				</P>		
+				</P>
 			</article>
 
+			<!-- EXSI  -->
+			<article id="EXSI">
+				<h2 class="major">EXSI</h2>
+				<span class="image main"><img src="images/pic04.png" alt="" /></span>
+				<p>ESXI配合PFsense实现单个IP内网映射</p>
+				<p>1. 前期准备</p>
+				<p>环境：ESXI6.0 +VMware vSphere Client+ PFSENSE2.4.4</p>
+				<p>专网IP ：33.112.9.252 （运营商或则公司给你的公网（专网）IP）</p>
+				<p>ESXI管理IP：192.168.1.5（随便设这个后面会删掉）</p>
+				<p>内网IP段：172.28.0.1/16 (这个是也自己随便建）</p>
+				<p>服务器最少有2个网口，配置时分别对应一个公网IP和一个管理IP，找台笔记本配置ip:192.168.1.1/24 当网关连接到服务器网口1（注意上ESXI上面要启动该网口）</p>
+				
+				<p class="image main"><img  src="images/wps1.jpg"></p>
+				
+				<p>之后把ESXI管理地址配置成192.168.1.5/24，用VMware vSphere Client或浏览器连接到ESXI。</p>
+				<p>2. 搭建NET用的局域网</p>
+				<p>VMware vSphere Client成功后创建一个标准交换机点击 主机--配置--网络--添加网络--虚拟机--创建vSphere标准交换机</p>
+				
+				<p class="image main"><img  src="images/wps2.jpg"></p>
+				
+				<p>点击下一步，可以更改端口组的名称（本例中改为LAN）</p>
+				<p>配置完成后，vSwitch1的端口组应该是这样的（这个交换机没有物理适配器）：</p>
+				<p class="image main"><img  src="images/wps3.jpg"></p>
+				
+				<p>3.创建管理端口组（这个端口组就是之后替换临时IP映射端口用了管理ESXI用的我这里用172.28.0.200）</p>
+				<p>在【配置】-【网络】中，右上角【添加网络】-【VMKenel】，下一步，选择【vSwitch1】，下一步，勾选【使用该端口组来管理流量】（网络标签根据需要可改名），下一步，需要填写IP地址。这里的IP地址是软路由中网络段（管理端口连接在软路由的LAN口），选择手动输入固定IP注意网关改成内网网关。
+				</p>
+				<p class="image main"><img  src="images/wps4.jpg"></p>
+				
+				<p>至此局域网已配置好了。</p>
+				<p>4. 在Esxi上安装pfsense软路由</p>
+				<p>软路由虚拟机要有2个网卡（一个连VM network组，另一个连上面的LAN组记住MAC地址），配置不用太高 1核1线1G内存2G容量就够了。</p>
+				<p>安装好后确定虚拟机2个网卡的MAC分别设置为WAN口和LEN口，之后WAN口配置公网（IP-33.112.9.250 掩码-24
+					网关-33.112.9.1，IPV6和DHCP看个人需求我没配）LAN口配置内网（IP-172.28.0.1 掩码-16 网关LEN不用配为空）</p>
+				<p>（pfsense配置参考这个连接https://blog.51cto.com/13937779/2163774）</p>
+				<p>注意！！！软路由服务器一定要设置成自动启动一起防止意外断电否则断电你就要去机房开了。</p>
+				<p class="image main"><img  src="images/wps5.jpg"></p>
+				
+				<p>5. 在Esxi上安装图形操作系统</p>
+				<p>安装有图形界面的操作系统（windows或图形界面linux）能打开firefox,google或IE11以上浏览器用来打开pfsense配置NET</p>
+				<p>完成后，在虚拟机的【编辑虚拟机设置】选项中，将目前所有虚拟机的网络适配器选项中，网络标签改为NAT，打开其中一台虚拟机，通过浏览器登入软路由的管理后台(http://172.28.0.1，默认帐号admin，密码pfsense)。
+				</p>
+				<p>6.pfsense配置NET</p>
+				<p class="image main"><img  src="images/wps6.jpg"></p>
+				
+				<p>Esxi使用902作vSphere的管理端口，443则为https主页的端口。Pfsense默认80端口是管理防火墙用的，ICMP不映射的话默认无法ping通服务器。配置完映射一定要点Apple
+					change保存配置。Dest
+					Ports 是公网你要映射的端口，NAT Ports 是要映射的内网服务器的实际端口不要搞反了！！！</p>
+				<p class="image main"><img  src="images/wps7.jpg"></p>
+				
+				<p>注意！！！嫌麻烦可以在roules里设置一条全部为any的路由否则服务器telnet端口都不通的，公网请注意这样配有风险，我的环境是专网。</p>
+				<p class="image main"><img  src="images/wps8.jpg"></p>
+				
+				<p>之后移除vSwitch1--VM network中的vmk0，画面会卡住，去看一下EXSI的网络有没有变成172.28.0.200/16 网关改成172.28.0.1
+					，所有网卡都没勾选是正常的千万别勾选。</p>
+				<p class="image main"><img  src="images/wps9.jpg"></p>
+				<p class="image main"><img  src="images/wps10.jpg"></p>
+				
+				<p>配置好后网络拓盘如下：</p>
+				
+				<p class="image main"><img  src="images/wps11.jpg"></p>
+				<p>之后服务器1号口插上公网网线，用浏览器打开下面地址进行远程管理就行了。</p>
+				<p class="image main"><img  src="images/wps12.jpg"></p>
+				<p>http://33.112.9.252:80/ &nbsp; 是pfsense的管理界面（注意是http走80端口）</p>
+				<p>https://33.112.9.252:443/ &nbsp; &nbsp;是EXSI的Web管理界面（注意是https走443端口）</p>
+				
+				<p>本教程参考链接：</p>
+				<p>http://www.cnblogs.com/kavmors/p/4348563.html</p>
+				<p>https://www.cnblogs.com/kavmors/p/4498768.html</p>
+				<p>https://blog.51cto.com/13937779/2163774</p>
+				<p>http://www.360doc.com/content/15/0608/23/15798950_476677337.shtml</p>
+			</article>
 			<!-- SSR2 -->
 			<!-- <article id="SSR2">
 				<h2 class="major">SSR2</h2>
@@ -285,12 +373,7 @@
 				<p> 后面填写</p>
 			</article> -->
 
-			<!-- SSR3 -->
-			<!-- <article id="SSR3">
-				<h2 class="major">SSR3</h2>
-				<span class="image main"><img src="images/pic04.png" alt="" /></span>
-				<p> 后面填写</p>
-			</article> -->
+
 
 			<!-- 留言模版 -->
 			<!-- <article id="SSR">
@@ -323,252 +406,7 @@
 								</ul>
 							</article> -->
 
-			<!-- Elements -->
-			<!-- <article id="elements">
-				<h2 class="major">Elements</h2> -->
 
-				<!-- <section>
-					<h3 class="major">Text</h3>
-					<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-						This
-						is <sup>superscript</sup> text and this is <sub>subscript</sub> text. This is <u>underlined</u> and this is code:
-						<code>for (;;) { ... }</code>.
-						Finally, <a href="#">this is a link</a>.</p>
-					<hr />
-					<h2>Heading Level 2</h2>
-					<h3>Heading Level 3</h3>
-					<h4>Heading Level 4</h4>
-					<h5>Heading Level 5</h5>
-					<h6>Heading Level 6</h6>
-					<hr />
-					<h4>Blockquote</h4>
-					<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod.
-						Vestibulum
-						ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan
-						faucibus.
-						Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-					<h4>Preformatted</h4>
-					<pre><code>i = 0;
-						while (!deck.isInOrder()) {
-							print 'Iteration ' + i;
-							deck.shuffle();
-							i++;
-						}
-						print 'It took ' + i + ' iterations to sort the deck.';
-					</code></pre>
-				</section> -->
-
-				<!-- <section>
-					<h3 class="major">Lists</h3>
-
-					<h4>Unordered</h4>
-					<ul>
-						<li>Dolor pulvinar etiam.</li>
-						<li>Sagittis adipiscing.</li>
-						<li>Felis enim feugiat.</li>
-					</ul>
-
-					<h4>Alternate</h4>
-					<ul class="alt">
-						<li>Dolor pulvinar etiam.</li>
-						<li>Sagittis adipiscing.</li>
-						<li>Felis enim feugiat.</li>
-					</ul>
-
-					<h4>Ordered</h4>
-					<ol>
-						<li>Dolor pulvinar etiam.</li>
-						<li>Etiam vel felis viverra.</li>
-						<li>Felis enim feugiat.</li>
-						<li>Dolor pulvinar etiam.</li>
-						<li>Etiam vel felis lorem.</li>
-						<li>Felis enim et feugiat.</li>
-					</ol>
-					<h4>Icons</h4>
-					<ul class="icons">
-						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-					</ul>
-
-					<h4>Actions</h4>
-					<ul class="actions">
-						<li><a href="#" class="button primary">Default</a></li>
-						<li><a href="#" class="button">Default</a></li>
-					</ul>
-					<ul class="actions stacked">
-						<li><a href="#" class="button primary">Default</a></li>
-						<li><a href="#" class="button">Default</a></li>
-					</ul>
-				</section> -->
-<!-- 
-				<section>
-					<h3 class="major">Table</h3>
-					<h4>Default</h4>
-					<div class="table-wrapper">
-						<table>
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Description</th>
-									<th>Price</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Item One</td>
-									<td>Ante turpis integer aliquet porttitor.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>Item Two</td>
-									<td>Vis ac commodo adipiscing arcu aliquet.</td>
-									<td>19.99</td>
-								</tr>
-								<tr>
-									<td>Item Three</td>
-									<td> Morbi faucibus arcu accumsan lorem.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>Item Four</td>
-									<td>Vitae integer tempus condimentum.</td>
-									<td>19.99</td>
-								</tr>
-								<tr>
-									<td>Item Five</td>
-									<td>Ante turpis integer aliquet porttitor.</td>
-									<td>29.99</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan="2"></td>
-									<td>100.00</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div> -->
-<!-- 
-					<h4>Alternate</h4>
-					<div class="table-wrapper">
-						<table class="alt">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Description</th>
-									<th>Price</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Item One</td>
-									<td>Ante turpis integer aliquet porttitor.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>Item Two</td>
-									<td>Vis ac commodo adipiscing arcu aliquet.</td>
-									<td>19.99</td>
-								</tr>
-								<tr>
-									<td>Item Three</td>
-									<td> Morbi faucibus arcu accumsan lorem.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>Item Four</td>
-									<td>Vitae integer tempus condimentum.</td>
-									<td>19.99</td>
-								</tr>
-								<tr>
-									<td>Item Five</td>
-									<td>Ante turpis integer aliquet porttitor.</td>
-									<td>29.99</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan="2"></td>
-									<td>100.00</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</section> -->
-
-				<!-- <section>
-					<h3 class="major">Buttons</h3>
-					<ul class="actions">
-						<li><a href="#" class="button primary">Primary</a></li>
-						<li><a href="#" class="button">Default</a></li>
-					</ul>
-					<ul class="actions">
-						<li><a href="#" class="button">Default</a></li>
-						<li><a href="#" class="button small">Small</a></li>
-					</ul>
-					<ul class="actions">
-						<li><a href="#" class="button primary icon fa-download">Icon</a></li>
-						<li><a href="#" class="button icon fa-download">Icon</a></li>
-					</ul>
-					<ul class="actions">
-						<li><span class="button primary disabled">Disabled</span></li>
-						<li><span class="button disabled">Disabled</span></li>
-					</ul>
-				</section> -->
-
-				<!-- <section>
-					<h3 class="major">Form</h3>
-					<form method="post" action="#">
-						<div class="fields">
-							<div class="field half">
-								<label for="demo-name">Name</label>
-								<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
-							</div>
-							<div class="field half">
-								<label for="demo-email">Email</label>
-								<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
-							</div>
-							<div class="field">
-								<label for="demo-category">Category</label>
-								<select name="demo-category" id="demo-category">
-									<option value="">-</option>
-									<option value="1">Manufacturing</option>
-									<option value="1">Shipping</option>
-									<option value="1">Administration</option>
-									<option value="1">Human Resources</option>
-								</select>
-							</div>
-							<div class="field half">
-								<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-								<label for="demo-priority-low">Low</label>
-							</div>
-							<div class="field half">
-								<input type="radio" id="demo-priority-high" name="demo-priority">
-								<label for="demo-priority-high">High</label>
-							</div>
-							<div class="field half">
-								<input type="checkbox" id="demo-copy" name="demo-copy">
-								<label for="demo-copy">Email me a copy</label>
-							</div>
-							<div class="field half">
-								<input type="checkbox" id="demo-human" name="demo-human" checked>
-								<label for="demo-human">Not a robot</label>
-							</div>
-							<div class="field">
-								<label for="demo-message">Message</label>
-								<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-							</div>
-						</div>
-						<ul class="actions">
-							<li><input type="submit" value="Send Message" class="primary" /></li>
-							<li><input type="reset" value="Reset" /></li>
-						</ul>
-					</form>
-				</section> -->
-
-			<!-- </article> -->
 
 		</div>
 

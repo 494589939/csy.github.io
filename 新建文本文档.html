@@ -1,0 +1,102 @@
+
+	<p>ESXI配合PFsense实现单个IP内网映射</p>
+	<p><br></p>
+	<p>1. 前期准备</p>
+	<p><br></p>
+	<p>环境：ESXI6.0 +VMware vSphere Client+ PFSENSE2.4.4</p>
+	<p><br></p>
+	<p>专网IP ：33.112.9.252 （运营商或则公司给你的公网（专网）IP）</p>
+	<p><br></p>
+	<p>ESXI管理IP：192.168.1.5（随便设这个后面会删掉）</p>
+	<p><br></p>
+	<p>内网IP段：172.28.0.1/16 (这个是也自己随便建）</p>
+	<p><br></p>
+	<p>服务器最少有2个网口，配置时分别对应一个公网IP和一个管理IP，找台笔记本配置ip:192.168.1.1/24 当网关连接到服务器网口1（注意上ESXI上面要启动该网口）</p>
+	<p><br><br><br><br><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps1.jpg"></p>
+	<p><br><br><br></p>
+	<p>之后把ESXI管理地址配置成192.168.1.5/24，用VMware vSphere Client或浏览器连接到ESXI。</p>
+	<p><br></p>
+	<p>2. 搭建NET用的局域网</p>
+	<p><br></p>
+	<p>VMware vSphere Client成功后创建一个标准交换机点击 主机--配置--网络--添加网络--虚拟机--创建vSphere标准交换机</p>
+	<p><br><br><br><br><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps2.jpg"></p>
+	<p><br><br><br></p>
+	<p>点击下一步，可以更改端口组的名称（本例中改为LAN）</p>
+	<p><br></p>
+	<p>配置完成后，vSwitch1的端口组应该是这样的（这个交换机没有物理适配器）：</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps3.jpg"></p>
+	<p><br><br><br></p>
+	<p>3.创建管理端口组（这个端口组就是之后替换临时IP映射端口用了管理ESXI用的我这里用172.28.0.200）</p>
+	<p><br></p>
+	<p>在【配置】-【网络】中，右上角【添加网络】-【VMKenel】，下一步，选择【vSwitch1】，下一步，勾选【使用该端口组来管理流量】（网络标签根据需要可改名），下一步，需要填写IP地址。这里的IP地址是软路由中网络段（管理端口连接在软路由的LAN口），选择手动输入固定IP注意网关改成内网网关。
+	</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps4.jpg"></p>
+	<p><br><br><br></p>
+	<p>至此局域网已配置好了。</p>
+	<p><br></p>
+	<p>4. 在Esxi上安装pfsense软路由</p>
+	<p><br></p>
+	<p>软路由虚拟机要有2个网卡（一个连VM network组，另一个连上面的LAN组记住MAC地址），配置不用太高 1核1线1G内存2G容量就够了。</p>
+	<p><br></p>
+	<p>安装好后确定虚拟机2个网卡的MAC分别设置为WAN口和LEN口，之后WAN口配置公网（IP-33.112.9.250 掩码-24
+		网关-33.112.9.1，IPV6和DHCP看个人需求我没配）LAN口配置内网（IP-172.28.0.1 掩码-16 网关LEN不用配为空）</p>
+	<p><br></p>
+	<p>（pfsense配置参考这个连接https://blog.51cto.com/13937779/2163774）</p>
+	<p><br></p>
+	<p>注意！！！软路由服务器一定要设置成自动启动一起防止意外断电否则断电你就要去机房开了。</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps5.jpg"></p>
+	<p><br><br><br></p>
+	<p>5. 在Esxi上安装图形操作系统</p>
+	<p><br></p>
+	<p>安装有图形界面的操作系统（windows或图形界面linux）能打开firefox,google或IE11以上浏览器用来打开pfsense配置NET</p>
+	<p><br></p>
+	<p>完成后，在虚拟机的【编辑虚拟机设置】选项中，将目前所有虚拟机的网络适配器选项中，网络标签改为NAT，打开其中一台虚拟机，通过浏览器登入软路由的管理后台(http://172.28.0.1，默认帐号admin，密码pfsense)。
+	</p>
+	<p><br></p>
+	<p>6.pfsense配置NET</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps6.jpg"></p>
+	<p><br><br></p>
+	<p>Esxi使用902作vSphere的管理端口，443则为https主页的端口。Pfsense默认80端口是管理防火墙用的，ICMP不映射的话默认无法ping通服务器。配置完映射一定要点Apple change保存配置。Dest
+		Ports 是公网你要映射的端口，NAT Ports 是要映射的内网服务器的实际端口不要搞反了！！！</p>
+		<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps7.jpg"></p>
+	<p><br><br><br></p>
+	<p>注意！！！嫌麻烦可以在roules里设置一条全部为any的路由否则服务器telnet端口都不通的，公网请注意这样配有风险，我的环境是专网。</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps8.jpg"></p>
+	<p><br><br><br></p>
+	<p>之后移除vSwitch1--VM network中的vmk0，画面会卡住，去看一下EXSI的网络有没有变成172.28.0.200/16 网关改成172.28.0.1 ，所有网卡都没勾选是正常的千万别勾选。</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps9.jpg"></p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps10.jpg"></p>
+	<p><br><br><br><br><br></p>
+	<p>配置好后网络拓盘如下：</p>
+	<p><br><br><br><br><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps12.jpg"></p>
+	<p><br></p>
+	<p>之后服务器1号口插上公网网线，用浏览器打开下面地址进行远程管理就行了。</p>
+	<p><br></p>
+	<p class="MsoNormal"><img width="554" height="360" src="wps13.jpg"></p>
+	<p><br></p>
+	<p>http://33.112.9.252:80/ &nbsp; 是pfsense的管理界面（注意是http走80端口）</p>
+	<p><br></p>
+	<p>https://33.112.9.252:443/ &nbsp; &nbsp;是EXSI的Web管理界面（注意是https走443端口）</p>
+	<p><br><br><br><br><br></p>
+	<p>本教程参考链接：</p>
+	<p><br></p>
+	<p>http://www.cnblogs.com/kavmors/p/4348563.html</p>
+	<p><br></p>
+	<p>https://www.cnblogs.com/kavmors/p/4498768.html</p>
+	<p><br></p>
+	<p>https://blog.51cto.com/13937779/2163774</p>
+	<p><br></p>
+	<p>http://www.360doc.com/content/15/0608/23/15798950_476677337.shtml</p>
+	<p><br></p>
+	<p><br></p>
